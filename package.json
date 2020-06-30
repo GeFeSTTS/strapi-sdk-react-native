@@ -1,5 +1,5 @@
 {
-  "name": "strapi-sdk-react-native",
+  "name": "@GeFeSTTS/strapi-sdk-react-native",
   "version": "0.1.0",
   "description": "Strapi SDK for React Native",
   "main": "build/main/index.js",
@@ -110,5 +110,8 @@
     "exclude": [
       "**/*.spec.js"
     ]
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/GeFeSTTS"
   }
 }
