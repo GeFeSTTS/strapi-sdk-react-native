@@ -1,11 +1,11 @@
 {
-  "name": "strapi-sdk-javascript",
-  "version": "0.3.3",
-  "description": "The official Strapi SDK for JavaScript",
+  "name": "strapi-sdk-react-native",
+  "version": "0.1.0",
+  "description": "Strapi SDK for React Native",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
-  "repository": "https://github.com/strapi/strapi-sdk-javascript",
+  "repository": "https://github.com/GeFeSTTS/strapi-sdk-react-native",
   "license": "MIT",
   "keywords": [],
   "scripts": {

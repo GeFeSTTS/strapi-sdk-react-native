@@ -24,14 +24,26 @@ export interface LocalStorageConfig {
   key: string;
 }
 
+export interface AsyncStorageConfig {
+  key: string;
+}
+
 export interface StoreConfig {
   cookie?: CookieConfig | false;
   localStorage?: LocalStorageConfig | false;
+  asyncStorage?: AsyncStorageConfig | false;
+}
+
+export interface AsyncStorage {
+  getItem: () => void;
+  setItem: () => void;
+  removeItem: () => void;
 }
 
 export default class Strapi {
   public axios: AxiosInstance;
   public storeConfig: StoreConfig;
+  public asyncStorage: any;
 
   /**
    * Default constructor.
@@ -40,15 +52,20 @@ export default class Strapi {
    */
   constructor(
     baseURL: string,
+    asyncStorage?: AsyncStorage,
     storeConfig?: StoreConfig,
     requestConfig?: AxiosRequestConfig
   ) {
+    this.asyncStorage = asyncStorage;
     this.axios = axios.create({
       baseURL,
       paramsSerializer: qs.stringify,
       ...requestConfig
     });
     this.storeConfig = {
+      asyncStorage: {
+        key: 'jwt'
+      },
       cookie: {
         key: 'jwt',
         options: {
@@ -69,6 +86,14 @@ export default class Strapi {
         existingToken = JSON.parse(window.localStorage.getItem(
           this.storeConfig.localStorage.key
         ) as string);
+      }
+      if (existingToken) {
+        this.setToken(existingToken, true);
+      }
+    } else {
+      let existingToken;
+      if (this.storeConfig.asyncStorage && this.asyncStorage) {
+        this.asyncStorage.getItem(this.storeConfig.asyncStorage.key).then((el: string) => existingToken = el);
       }
       if (existingToken) {
         this.setToken(existingToken, true);
@@ -372,7 +397,7 @@ export default class Strapi {
    * Set token on Axios configuration
    * @param token Retrieved by register or login
    */
-  public setToken(token: string, comesFromStorage?: boolean): void {
+  public async setToken(token: string, comesFromStorage?: boolean): Promise<void> {
     this.axios.defaults.headers.common.Authorization = 'Bearer ' + token;
     if (this.isBrowser() && !comesFromStorage) {
       if (this.storeConfig.localStorage) {
@@ -388,6 +413,11 @@ export default class Strapi {
           this.storeConfig.cookie.options
         );
       }
+    } else if(this.storeConfig.asyncStorage){
+      await this.asyncStorage.setItem(
+        this.storeConfig.asyncStorage.key,
+        token
+      )
     }
   }
 
@@ -413,6 +443,6 @@ export default class Strapi {
    * Check if it runs on browser
    */
   private isBrowser(): boolean {
-    return typeof window !== 'undefined';
+    return Boolean(window && window.document)
   }
 }

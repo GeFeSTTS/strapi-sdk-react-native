@@ -1,16 +1,7 @@
-⚠️ This package not up to date and maintained ⚠️
-
-We recommend you not to use this package. We stopped to maintained it by lack of time and also because the features provided by this SDK are the same as a good HTTP client well configured.
-So I suggest you use the best HTTP client for the technology you use. To configure it to target your Strapi API.
-Here so usefull ressources to help you:
-- [**API Endpoints**](https://strapi.io/documentation/3.0.0-beta.x/guides/api-endpoints.html#endpoints)
-- [**URL parameters**](https://strapi.io/documentation/3.0.0-beta.x/guides/parameters.html)
-
----
 
 <p align="center"><img src="https://cldup.com/7umchwdUBh.png" /></p>
 
-<h3 align="center">The official Strapi SDK for JavaScript, available for browsers or Node.js backends.</h3>
+<h3 align="center">Strapi SDK for using it in React and React-Native projects, available for browsers or Node.js backends.</h3>
 
 ---
 
@@ -25,7 +16,7 @@ Here so usefull ressources to help you:
 ## Install
 
 ```sh
-npm install strapi-sdk-javascript
+npm install strapi-sdk-react-native
 ```
 
 ## Start now
@@ -33,8 +24,9 @@ npm install strapi-sdk-javascript
 ### New instance
 ```js
 import Strapi from 'strapi-sdk-javascript';
+import { AsyncStorage } from 'react-native';
 
-const strapi = new Strapi('http://localhost:1337');
+const strapi = new Strapi('http://localhost:1337', AsyncStorage);
 ```
 
 ### Authentications
@@ -83,7 +75,7 @@ const files = await strapi.upload(form, {
 
 ## API
 
-### `Strapi(baseURL, storeConfig, requestConfig)`
+### `Strapi(baseURL, asyncStorage, storeConfig, requestConfig)`
 ### `request(method, url, requestConfig)`
 ### `register(username, email, password)`
 ### `login(identifier, password)`
